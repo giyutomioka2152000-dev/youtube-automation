@@ -1,0 +1,23 @@
+
+name: YouTube Cloud Worker
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "47 6 * * *"
+
+permissions:
+  contents: read
+
+jobs:
+  cloud-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Check cloud worker
+        run: |
+          echo "YouTube automation cloud worker is running."
+          date -u
+          echo "Cloud worker check completed."
