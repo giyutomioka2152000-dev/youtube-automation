@@ -10,14 +10,33 @@ permissions:
   contents: read
 
 jobs:
-  cloud-check:
+  generate-video:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Check cloud worker
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install FFmpeg
         run: |
-          echo "YouTube automation cloud worker is running."
-          date -u
-          echo "Cloud worker check completed."
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg
+
+      - name: Install Python dependencies
+        run: |
+          pip install -r requirements.txt
+
+      - name: Generate sample video
+        run: |
+          python main.py
+
+      - name: Save generated video
+        uses: actions/upload-artifact@v4
+        with:
+          name: educational-video
+          path: generated_videos/
